@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import { Router } from "@reach/router";
+const Nav = React.lazy(() => import("./Nav"));
+const Home = React.lazy(() => import("./Home"));
+const Calculations = React.lazy(() => import("./Calculations"));
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const LoadingNav = () => <nav>Loading Nav</nav>;
+const LoadingPage = () => <span>Loading Page</span>;
+
+const App = () => (
+  <div className="App">
+    <Suspense fallback={<LoadingNav />}>
+      <Nav />
+    </Suspense>
+
+    <Suspense fallback={<LoadingPage />}>
+      <Router>
+        <Home path="/" />
+        <Calculations path="/calculations" />
+      </Router>
+    </Suspense>
+  </div>
+);
 
 export default App;
